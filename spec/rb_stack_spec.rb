@@ -1,8 +1,8 @@
 require 'spec_helper'
-require_relative '..//lib/rb_fifo.rb'
+require_relative '..//lib/rb_lifo.rb'
 
-RSpec.describe do
+RSpec.describe 'LIFO (ruby)' do
   it_behaves_like 'stack' do
-    let(:base_stack) { RBFifo.new }
+    let(:base_stack) { RBLifo.new }
   end
 end

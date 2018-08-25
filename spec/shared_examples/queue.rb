@@ -1,6 +1,6 @@
-shared_examples 'stack' do
+shared_examples 'queue' do
   describe '#initialize' do
-    subject { base_stack }
+    subject { base_queue }
 
     it "initializes its length with 0" do
       expect(subject.length).to eq 0
@@ -8,10 +8,10 @@ shared_examples 'stack' do
   end
 
   describe '#push' do
-    subject { base_stack }
+    subject { base_queue }
 
-    it "returns base_stack" do
-      expect( subject.push(:foo) ).to eq base_stack
+    it "returns base_queue" do
+      expect( subject.push(:foo) ).to eq base_queue
     end
 
     it "changes its length by 1" do
@@ -20,31 +20,31 @@ shared_examples 'stack' do
 
     context "when pushing :foo element" do
       before do
-        @stack = base_stack.push(:foo)
+        @queue = base_queue.push(:foo)
       end
 
       describe '#value' do
-        subject { @stack.value }
+        subject { @queue.value }
         it { is_expected.to eq :foo }
       end
 
       describe '#length' do
-        subject { @stack.length }
+        subject { @queue.length }
         it { is_expected.to eq 1 }
       end
 
       context "when pushing 'bar' element" do
         before do
-          @stack = base_stack.push('bar')
+          @queue = base_queue.push('bar')
         end
 
         describe '#value' do
-          subject { @stack.value }
+          subject { @queue.value }
           it { is_expected.to eq 'bar' }
         end
 
         describe '#length' do
-          subject { @stack.length }
+          subject { @queue.length }
           it { is_expected.to eq 2 }
         end
       end
@@ -52,7 +52,7 @@ shared_examples 'stack' do
   end
 
   describe '#pop' do
-    subject { base_stack }
+    subject { base_queue }
 
     it "returns nil" do
       expect( subject.pop ).to eq nil
@@ -64,7 +64,7 @@ shared_examples 'stack' do
 
     context "when pushing :foo element" do
       before do
-        base_stack.push(:foo)
+        base_queue.push(:foo)
       end
 
       it "returns :foo" do
@@ -77,16 +77,16 @@ shared_examples 'stack' do
 
       context "when popped" do
         before do
-          base_stack.pop
+          base_queue.pop
         end
 
         describe '#value' do
-          subject { base_stack.value }
+          subject { base_queue.value }
           it { is_expected.to eq nil }
         end
 
         describe '#length' do
-          subject { base_stack.length }
+          subject { base_queue.length }
           it { is_expected.to eq 0 }
         end
 
@@ -107,7 +107,7 @@ shared_examples 'stack' do
 
       context "when pushing 'bar' element" do
         before do
-          base_stack.push('bar')
+          base_queue.push('bar')
         end
 
         it "returns 'bar'" do
@@ -120,36 +120,36 @@ shared_examples 'stack' do
 
         context "when popped" do
           before do
-            base_stack.pop
+            base_queue.pop
           end
 
           describe '#value' do
-            subject { base_stack.value }
+            subject { base_queue.value }
             it { is_expected.to eq :foo }
           end
 
           describe '#length' do
-            subject { base_stack.length }
+            subject { base_queue.length }
             it { is_expected.to eq 1 }
           end
 
           describe '#pop' do
-            subject { base_stack.pop }
+            subject { base_queue.pop }
             it { is_expected.to eq :foo }
           end
 
           context "when popped twice" do
             before do
-              base_stack.pop
+              base_queue.pop
             end
 
             describe '#value' do
-              subject { base_stack.value }
+              subject { base_queue.value }
               it { is_expected.to eq nil }
             end
 
             describe '#length' do
-              subject { base_stack.length }
+              subject { base_queue.length }
               it { is_expected.to eq 0 }
             end
           end

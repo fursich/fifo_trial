@@ -1,23 +1,23 @@
-class RBFifo
-  attr_reader :depth, :last
+class RBLifo
+  attr_reader :length, :last
 
   def initialize
-    @depth = 0
+    @length = 0
     @last = nil
   end
 
   def push(val)
     @last = Element.new(val, last) 
-    @depth += 1
+    @length += 1
     self
   end
 
   def pop
-    return nil if depth.zero?
+    return nil if length.zero?
 
     last_object = last
     @last = last_object.parent
-    @depth -= 1
+    @length -= 1
     last_object.value
   end
 

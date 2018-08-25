@@ -1,13 +1,13 @@
 require 'benchmark'
-require_relative '../lib/fifo.bundle'
-require_relative '../lib/rb_fifo.rb'
+require_relative '../lib/lifo.bundle'
+require_relative '../lib/rb_lifo.rb'
 
 BENCHMARK_COUNT = 100
 UNIT_ITERATION = 100000
 
 Benchmark.bm BENCHMARK_COUNT do |r|  
-  r.report 'FIFO (c-ext)' do
-    f = Fifo.new
+  r.report 'LIFO (c-ext)' do
+    f = Lifo.new
     UNIT_ITERATION.times do |n|
       f.push(n)
     end
@@ -16,8 +16,8 @@ Benchmark.bm BENCHMARK_COUNT do |r|
     end
   end
 
-  r.report 'FIFO (ruby)' do
-    f = RBFifo.new
+  r.report 'LIFO (ruby)' do
+    f = RBLifo.new
     UNIT_ITERATION.times do |n|
       f.push(n)
     end

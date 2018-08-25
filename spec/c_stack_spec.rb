@@ -1,8 +1,8 @@
 require 'spec_helper'
-require_relative '../lib/fifo.bundle'
+require_relative '../bin/lifo.bundle'
 
-RSpec.describe 'Fifo (c ext)' do
+RSpec.describe 'Lifo (c ext)' do
   it_behaves_like 'stack' do
-    let(:base_stack) { Fifo.new }
+    let(:base_stack) { Lifo.new }
   end
 end
