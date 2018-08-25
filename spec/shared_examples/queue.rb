@@ -2,86 +2,112 @@ shared_examples 'queue' do
   describe '#initialize' do
     subject { base_queue }
 
-    it "initializes its length with 0" do
-      expect(subject.length).to eq 0
+    describe '#back' do
+      subject { base_queue.back }
+      it { is_expected.to eq nil }
+    end
+
+    describe '#front' do
+      subject { base_queue.front }
+      it { is_expected.to eq nil }
+    end
+
+    describe '#length' do
+      subject { base_queue.length }
+      it { is_expected.to eq 0 }
     end
   end
 
-  describe '#push' do
+  describe '#enqueue' do
     subject { base_queue }
 
-    it "returns base_queue" do
-      expect( subject.push(:foo) ).to eq base_queue
+    it 'returns base_queue' do
+      expect(subject.enqueue(:foo)).to eq base_queue
     end
 
-    it "changes its length by 1" do
-      expect{ subject.push(:foo) }.to change { subject.length }.by(1)
+    it 'increases its length by 1' do
+      expect{ subject.enqueue(:foo) }.to change { subject.length }.by(1)
     end
 
-    context "when pushing :foo element" do
+    context 'when enqueueing :foo element' do
       before do
-        @queue = base_queue.push(:foo)
+        base_queue.enqueue(:foo)
       end
 
-      describe '#value' do
-        subject { @queue.value }
+      describe '#back' do
+        subject { base_queue.back }
+        it { is_expected.to eq :foo }
+      end
+
+      describe '#front' do
+        subject { base_queue.front }
         it { is_expected.to eq :foo }
       end
 
       describe '#length' do
-        subject { @queue.length }
+        subject { base_queue.length }
         it { is_expected.to eq 1 }
       end
 
-      context "when pushing 'bar' element" do
+      context "when enqueueing 'bar' element" do
         before do
-          @queue = base_queue.push('bar')
+          base_queue.enqueue('bar')
         end
 
-        describe '#value' do
-          subject { @queue.value }
+        describe '#back' do
+          subject { base_queue.back }
           it { is_expected.to eq 'bar' }
         end
 
+        describe '#front' do
+          subject { base_queue.front }
+          it { is_expected.to eq :foo }
+        end
+
         describe '#length' do
-          subject { @queue.length }
+          subject { base_queue.length }
           it { is_expected.to eq 2 }
         end
       end
     end
   end
 
-  describe '#pop' do
+  describe '#dequeue' do
     subject { base_queue }
 
-    it "returns nil" do
-      expect( subject.pop ).to eq nil
+    it 'returns nil' do
+      expect(subject.dequeue).to eq nil
     end
 
-    it "keeps its length unchanged" do
-      expect{ subject.pop }.not_to change { subject.length }
+    it 'keeps its length unchanged' do
+      expect{ subject.dequeue }.not_to change { subject.length }
     end
 
-    context "when pushing :foo element" do
+    context 'when enqueueing :foo element' do
       before do
-        base_queue.push(:foo)
+        base_queue.enqueue(:foo)
       end
 
-      it "returns :foo" do
-        expect( subject.pop ).to eq :foo
+      it 'returns :foo' do
+        expect(subject.dequeue).to eq :foo
       end
 
-      it "decreases its length by 1" do
-        expect{ subject.pop }.to change { subject.length }.by(-1)
+      it 'decreases its length by 1' do
+        expect{ subject.dequeue }.to change { subject.length }.by(-1)
       end
 
-      context "when popped" do
+      context 'when dequeued' do
         before do
-          base_queue.pop
+          base_queue.dequeue
         end
 
-        describe '#value' do
-          subject { base_queue.value }
+        describe '#back' do
+          subject { base_queue.back }
+          it { is_expected.to eq nil }
+        end
+
+        describe '#front' do
+          subject { base_queue.front }
           it { is_expected.to eq nil }
         end
 
@@ -90,42 +116,47 @@ shared_examples 'queue' do
           it { is_expected.to eq 0 }
         end
 
-        context "when popped twice" do
-          it "raises no error(s)" do
-            expect{ subject.pop }.not_to raise_error
+        context 'when dequeued twice' do
+          it 'raises no error(s)' do
+            expect{ subject.dequeue }.not_to raise_error
           end
 
-          it "returns nil" do
-            expect( subject.pop ).to eq nil
+          it 'returns nil' do
+            expect(subject.dequeue).to eq nil
           end
 
-          it "keeps its length unchanged" do
-            expect{ subject.pop }.not_to change { subject.length }
+          it 'keeps its length unchanged' do
+            expect{ subject.dequeue }.not_to change { subject.length }
           end
         end
       end
 
-      context "when pushing 'bar' element" do
+      context "when enqueueing 'bar' element" do
         before do
-          base_queue.push('bar')
+          base_queue.enqueue('bar')
         end
 
-        it "returns 'bar'" do
-          expect( subject.pop ).to eq 'bar'
+        it 'returns :foo' do
+          expect(subject.dequeue).to eq :foo
         end
 
-        it "decreases its length by 1" do
-          expect{ subject.pop }.to change { subject.length }.by(-1)
+        it 'decreases its length by 1' do
+          expect{ subject.dequeue }.to change { subject.length }.by(-1)
         end
 
-        context "when popped" do
+        context 'when dequeued' do
           before do
-            base_queue.pop
+            base_queue.dequeue
           end
 
-          describe '#value' do
-            subject { base_queue.value }
-            it { is_expected.to eq :foo }
+          describe '#back' do
+            subject { base_queue.back }
+            it { is_expected.to eq 'bar' }
+          end
+
+          describe '#front' do
+            subject { base_queue.front }
+            it { is_expected.to eq 'bar' }
           end
 
           describe '#length' do
@@ -133,18 +164,23 @@ shared_examples 'queue' do
             it { is_expected.to eq 1 }
           end
 
-          describe '#pop' do
-            subject { base_queue.pop }
-            it { is_expected.to eq :foo }
+          describe '#dequeue' do
+            subject { base_queue.dequeue }
+            it { is_expected.to eq 'bar' }
           end
 
-          context "when popped twice" do
+          context 'when dequeued twice' do
             before do
-              base_queue.pop
+              base_queue.dequeue
             end
 
-            describe '#value' do
-              subject { base_queue.value }
+            describe '#back' do
+              subject { base_queue.back }
+              it { is_expected.to eq nil }
+            end
+
+            describe '#front' do
+              subject { base_queue.front }
               it { is_expected.to eq nil }
             end
 
