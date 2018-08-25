@@ -1,13 +1,13 @@
 class RBLifo
-  attr_reader :length, :last
+  attr_reader :length
 
   def initialize
     @length = 0
-    @last = nil
+    @last_node = nil
   end
 
   def push(val)
-    @last = Element.new(val, last) 
+    @last_node = Node.new(val, @last_node) 
     @length += 1
     self
   end
@@ -15,17 +15,17 @@ class RBLifo
   def pop
     return nil if length.zero?
 
-    last_object = last
-    @last = last_object.parent
+    node = @last_node
+    @last_node = node.parent
     @length -= 1
-    last_object.value
+    node.value
   end
 
   def value
-    last&.value
+    @last_node&.value
   end
 
-  class Element
+  class Node
     attr_reader :value, :parent
     def initialize(val, parent)
       @value = val
