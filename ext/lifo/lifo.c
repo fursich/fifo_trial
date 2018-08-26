@@ -16,7 +16,7 @@ rb_lifo_node_initialize(int argc, VALUE *argv, VALUE self) {
     VALUE v, p;
 
     if (argc == 0) {
-      rb_raise(rb_eArgError, "Not enough arguments. You need to pass a value to store to initialize the element.");
+      rb_raise(rb_eArgError, "Not enough arguments. You need to pass a value to store in order to initialize the element.");
     }
 
     rb_scan_args(argc, argv, "11", &v, &p);
@@ -64,11 +64,12 @@ rb_lifo_pop(VALUE self)
     if (length == 0) {
       return Qnil;
     }
-    rb_iv_set(self, "@length", INT2FIX(length - 1));
 
     last_node_obj = rb_iv_get(self, "@last_node");
     parent_obj = rb_iv_get(last_node_obj, "@parent");
     rb_iv_set(self, "@last_node", parent_obj);
+
+    rb_iv_set(self, "@length", INT2FIX(length - 1));
 
     return rb_iv_get(last_node_obj, "@value");
 }

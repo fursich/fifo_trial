@@ -3,4 +3,4 @@
 ext/**/Makefile
 ext/**/*.o
 ext/**/*.bundle
-
+ext/**/*.bak
