@@ -4,11 +4,12 @@ require_relative '../bin/fifo.bundle'
 require_relative '../lib/rb_lifo.rb'
 require_relative '../lib/rb_fifo.rb'
 require_relative '../bin/clifo.bundle'
+require_relative '../bin/cfifo.bundle'
 
 BENCHMARK_COUNT = 100
 UNIT_ITERATION = 100000
 
-Benchmark.bm BENCHMARK_COUNT do |r|  
+Benchmark.bm BENCHMARK_COUNT do |r|
   r.report 'LIFO (c-ext)' do
     l = Lifo.new
     UNIT_ITERATION.times do |n|
@@ -59,5 +60,13 @@ Benchmark.bm BENCHMARK_COUNT do |r|
     end
   end
 
+  r.report 'FIFO (using c struct)' do
+    f = CFifo.new
+    UNIT_ITERATION.times do |n|
+      f.enqueue(n)
+    end
+    UNIT_ITERATION.times do |n|
+      f.dequeue
+    end
+  end
 end
-
